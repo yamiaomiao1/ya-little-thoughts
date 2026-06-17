@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7f1d1d">
+  <meta name="description" content="雅的小巧思，一个离线可用的私人想法日记本。">
+  <title>雅的小巧思</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>雅的小巧思</h1>
+      <p class="subtitle">Ya's Little Thoughts / INTP Thought Journal</p>
+      <p class="description">记录日常小巧思、突然冒出来的句子、文学联想、论文灵感和还没想清楚的问题。</p>
+    </div>
+    <img class="app-icon" src="./icon.svg" alt="雅的小巧思图标">
+  </header>
+
+  <main class="app-shell">
+    <section class="quick-panel section-panel" id="record">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">快速记录</p>
+          <h2>现在脑子里有什么？</h2>
+        </div>
+        <button class="ghost-button small-button" id="refreshPrompt" type="button">换一个问题</button>
+      </div>
+      <textarea id="quickInput" class="quick-input" rows="7" placeholder="现在脑子里有什么？"></textarea>
+      <div class="prompt-line" id="dailyPrompt"></div>
+      <div class="action-row">
+        <button class="primary-button" id="quickSave" type="button">保存为小巧思</button>
+        <button class="secondary-button" id="randomThought" type="button">随机翻一条旧巧思</button>
+      </div>
+    </section>
+
+    <aside class="side-column">
+      <section class="section-panel collapsible" id="stats">
+        <button class="panel-toggle" type="button" data-toggle="statsBody">
+          <span>统计面板</span>
+          <span class="toggle-mark">+</span>
+        </button>
+        <div class="panel-body open" id="statsBody">
+          <div class="stats-grid" id="statsGrid"></div>
+        </div>
+      </section>
+
+      <section class="section-panel collapsible" id="filters">
+        <button class="panel-toggle" type="button" data-toggle="filterBody">
+          <span>搜索筛选</span>
+          <span class="toggle-mark">+</span>
+        </button>
+        <div class="panel-body open" id="filterBody">
+          <label class="field-label" for="searchInput">搜索</label>
+          <input id="searchInput" class="text-field" type="search" placeholder="标题、正文、标签、一句话判断">
+          <div class="filter-grid">
+            <label>标签<input id="filterTag" class="text-field" type="text" placeholder="输入标签"></label>
+            <label>心情<select id="filterMood" class="text-field"></select></label>
+            <label>思维状态<select id="filterThinking" class="text-field"></select></label>
+            <label>巧思状态<select id="filterStatus" class="text-field"></select></label>
+          </div>
+          <button class="ghost-button" id="clearFilters" type="button">清空筛选</button>
+        </div>
+      </section>
+    </aside>
+
+    <section class="editor-panel section-panel" id="editor">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">完整编辑区</p>
+          <h2 id="editorHeading">未命名巧思</h2>
+        </div>
+        <button class="secondary-button" id="newFullThought" type="button">新建完整巧思</button>
+      </div>
+
+      <div class="form-grid">
+        <label>标题<input id="titleInput" class="text-field" type="text" placeholder="未命名巧思"></label>
+        <label>日期<input id="dateInput" class="text-field" type="date"></label>
+        <label>心情<select id="moodInput" class="text-field"></select></label>
+        <label>思维状态<select id="thinkingInput" class="text-field"></select></label>
+        <label>巧思状态<select id="statusInput" class="text-field"></select></label>
+        <label class="wide">标签<input id="tagsInput" class="text-field" type="text" placeholder="文学、AI、论文"></label>
+      </div>
+
+      <div class="tag-bank" id="tagBank"></div>
+
+      <label class="field-label" for="contentInput">正文</label>
+      <textarea id="contentInput" class="text-area" rows="9" placeholder="这里可以认真展开，也可以只留下一句话。"></textarea>
+
+      <div class="intp-grid">
+        <label>今天我突然想到什么<textarea id="suddenThoughtInput" rows="3"></textarea></label>
+        <label>这个想法为什么吸引我<textarea id="whyAttractiveInput" rows="3"></textarea></label>
+        <label>它让我联想到什么<textarea id="associationInput" rows="3"></textarea></label>
+        <label>我现在最想弄清楚的问题是什么<textarea id="mainQuestionInput" rows="3"></textarea></label>
+        <label>我有没有在逃避什么<textarea id="avoidanceInput" rows="3"></textarea></label>
+        <label>这个想法以后可以发展成什么<textarea id="futureUseInput" rows="3"></textarea></label>
+        <label class="wide">一句话判断<input id="oneSentenceInput" class="text-field" type="text"></label>
+      </div>
+
+      <div class="action-row">
+        <button class="primary-button" id="saveFullThought" type="button">保存为小巧思</button>
+        <span class="meta-note" id="editingMeta">Ctrl + S 可以保存当前记录</span>
+      </div>
+    </section>
+
+    <section class="list-panel section-panel" id="list">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">日记列表区</p>
+          <h2>小巧思列表</h2>
+        </div>
+        <span class="meta-note" id="resultCount"></span>
+      </div>
+      <div class="thought-list" id="thoughtList"></div>
+    </section>
+
+    <section class="backup-panel section-panel" id="backup">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">导入导出区</p>
+          <h2>备份与恢复</h2>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="secondary-button" id="exportBackup" type="button">导出备份</button>
+        <label class="file-button">导入备份<input id="importBackup" type="file" accept="application/json,.json"></label>
+      </div>
+      <div class="import-choice hidden" id="importChoice">
+        <p>是否合并到现有记录中？</p>
+        <button class="primary-button" id="mergeImport" type="button">合并导入</button>
+        <button class="danger-button" id="replaceImport" type="button">覆盖现有记录</button>
+      </div>
+      <p class="privacy-note">所有记录默认保存在当前浏览器本地。更换设备或清理浏览器数据可能导致记录丢失，请定期导出 JSON 备份。</p>
+    </section>
+  </main>
+
+  <nav class="mobile-nav" aria-label="移动端导航">
+    <a href="#record">记录</a>
+    <a href="#list">列表</a>
+    <a href="#stats">统计</a>
+    <a href="#backup">备份</a>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js"></script>
+</body>
+</html>
