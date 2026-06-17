@@ -1,0 +1,18 @@
+{
+  "name": "雅的小巧思",
+  "short_name": "小巧思",
+  "description": "适合 INTP 使用的私人想法日记本。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#7f1d1d",
+  "background_color": "#100f11",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
